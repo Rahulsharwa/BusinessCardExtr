@@ -1,0 +1,12 @@
+{
+    email rahulsharwa2020@gmail.com
+}
+
+# Replace with your domain if you have one
+# e.g., cards.example.com
+:80 {
+    reverse_proxy api:8000
+    log {
+        output file /data/caddy.log
+    }
+}

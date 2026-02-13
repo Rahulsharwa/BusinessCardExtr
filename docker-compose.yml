@@ -3,10 +3,26 @@ version: "3.8"
 services:
   api:
     build: .
-    ports:
-      - "8000:8000"
     env_file:
       - .env
     volumes:
-      - ./local_images:/data/images # Mount for local-folder mode
+      - ./local_images:/data/images
+      - ./service_account.json:/app/service_account.json:ro
     restart: unless-stopped
+
+  caddy:
+    image: caddy:latest
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - api
+
+volumes:
+  caddy_data:
+  caddy_config:
